@@ -7,6 +7,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var priority int
+
 var addCmd = &cobra.Command{
 	Use: "add",
 	Short: "add a new todo",
@@ -21,8 +23,9 @@ func addRun(cmd *cobra.Command, args []string) {
 	}
 
 	for _, x := range args {
-		items  = append(items, 
-		todo.Item{Text: x})
+		item := todo.Item{Text: x}
+		item.SetPriority(priority)
+		items  = append(items, item)
 	}
 	
 	err = todo.SaveItems(dataFile, items)
@@ -33,4 +36,6 @@ func addRun(cmd *cobra.Command, args []string) {
 
 func init() {
 	rootCmd.AddCommand(addCmd)
+
+	addCmd.Flags().IntVarP(&priority, "priority", "p", 2, "Priority: 1,2,3")
 }

@@ -3,11 +3,60 @@ package todo
 import (
 	"encoding/json"
 	"os"
+	"strconv"
 )
 
 type Item struct{
 	Text string
+	Priority int
+	Position int
 }
+
+func (item  *Item) SetPriority(pri int) {
+	switch pri {
+	case 1:
+		item.Priority = 1
+	case 3:
+		item.Priority = 3
+	default:
+		item.Priority = 2
+	}
+}
+
+func (item *Item) GetPriority() string {
+	if item.Priority == 1 {
+		return "(1)"
+	} 
+	if item.Priority == 3 {
+		return "(3)"
+	}
+
+	return ""
+}
+
+func (item *Item) GetPosition() string {
+	return strconv.Itoa(item.Position) + "."
+}
+
+
+// Implements a sort.Sort() interface  for array of Item base of priority and position
+type ByPriority []Item
+
+func (a ByPriority) Len() int {
+	return len(a)
+}
+
+func (a ByPriority) Swap(i, j int) {
+	a[i], a[j] = a[j], a[i]
+}
+
+func (a ByPriority) Less(i, j int) bool {
+	if a[i].Priority == a[j].Priority {
+		return a[i].Position < a[j].Position
+	}
+
+	return a[i].Priority > a[j].Priority
+} 
 
 func SaveItems(filename string, items []Item) error {
 
@@ -36,6 +85,11 @@ func ReadItems(filename string) ([]Item, error) {
 	if  err != nil {
 		return []Item{}, err
 	}
+	
+	for i := range items {
+		items[i].Position = i + 1
+	}
 
 	return items, nil
 }
+

@@ -3,6 +3,9 @@ package cmd
 import (
 	"fmt"
 	"go-cli-app/todo"
+	"os"
+	"sort"
+	"text/tabwriter"
 
 	"github.com/spf13/cobra"
 )
@@ -20,7 +23,15 @@ func lsitRun(cmd *cobra.Command, args []string) {
 		fmt.Println(fmt.Errorf("%v", err))
 	}
 
-	fmt.Println(items)
+	sort.Sort(todo.ByPriority(items))
+
+	// GOOGLE THIS
+	w := tabwriter.NewWriter(os.Stdout, 3, 0, 1, ' ', 0)
+	for _, i := range items {
+		fmt.Fprintln(w, i.GetPosition()+"\t"+i.GetPriority()+"\t"+i.Text+"\t")
+	}
+
+	w.Flush()
 }
 
 func init() {
