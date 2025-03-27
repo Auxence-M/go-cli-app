@@ -27,9 +27,13 @@ func (item *Item) GetPriority() string {
 	if item.Priority == 1 {
 		return "(1)"
 	} 
+	if item.Priority == 2 {
+		return "(2)"
+	}
 	if item.Priority == 3 {
 		return "(3)"
 	}
+	
 
 	return ""
 }
@@ -55,7 +59,7 @@ func (a ByPriority) Less(i, j int) bool {
 		return a[i].Position < a[j].Position
 	}
 
-	return a[i].Priority > a[j].Priority
+	return a[i].Priority < a[j].Priority
 } 
 
 func SaveItems(filename string, items []Item) error {
