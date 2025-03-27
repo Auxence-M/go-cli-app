@@ -11,16 +11,15 @@ import (
 	"github.com/spf13/viper"
 )
 
-var doneCmd = &cobra.Command{
-	Use: "done",
-	Aliases: []string{"do"},
-	Short: "set todo items to done",
-	Long: `done will set a todo item on a todo list to done.
-	The label of a todo item is its position ranging from 1 to n`,
-	Run: doneRun,
+var editCmd = &cobra.Command{
+Use: "edit",
+Short: "edits a todo item",
+Long: `edit will edit a todo item value. 
+It takes only two argument the label or position of the todo item and its new value`,
+Run: editRun,
 }
 
-func doneRun (cmd *cobra.Command, args []string) {
+func editRun(cmd *cobra.Command, args []string) {
 	items, err := todo.ReadItems(viper.GetString("datafile"))
 	if err != nil {
 		log.Printf("%v", err)
@@ -31,9 +30,10 @@ func doneRun (cmd *cobra.Command, args []string) {
 		log.Fatalln(args[0], "is not a valid label\n", err)
 	}
 
-	if i > 0  && i <= len(items) {
-		items[i-1].Done = true
-		fmt.Printf("%q %v\n", items[i-1].Text, "marked done")
+	if i> 0 && i <= len(items) {
+		prevValue := items[i-1].Text
+		items[i-1].Text = args[1]
+		fmt.Println(prevValue, "changed to", args[1])
 
 		sort.Sort(todo.ByPriority(items))
 		todo.SaveItems(viper.GetString("datafile"), items)
@@ -43,8 +43,10 @@ func doneRun (cmd *cobra.Command, args []string) {
 		log.Println(i, "does not match any items")
 	}
 
+
+
 }
 
 func init() {
-	rootCmd.AddCommand(doneCmd)
+	rootCmd.AddCommand(editCmd)
 }
