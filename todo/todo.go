@@ -10,6 +10,7 @@ type Item struct{
 	Text string
 	Priority int
 	Position int
+	Done bool
 }
 
 func (item  *Item) SetPriority(pri int) {
@@ -42,6 +43,14 @@ func (item *Item) GetPosition() string {
 	return strconv.Itoa(item.Position) + "."
 }
 
+func (item *Item) DisplayDone() string {
+	if item.Done {
+		return "✓"
+	}
+
+	return ""
+}
+
 
 // Implements a sort.Sort() interface  for array of Item base of priority and position
 type ByPriority []Item
@@ -55,8 +64,13 @@ func (a ByPriority) Swap(i, j int) {
 }
 
 func (a ByPriority) Less(i, j int) bool {
+
 	if a[i].Priority == a[j].Priority {
 		return a[i].Position < a[j].Position
+	}
+
+	if a[i].Done != a[j].Done {
+		return a[i].Done
 	}
 
 	return a[i].Priority < a[j].Priority
