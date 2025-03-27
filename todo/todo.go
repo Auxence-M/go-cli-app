@@ -73,7 +73,7 @@ func (a ByPriority) Less(i, j int) bool {
 		return a[i].Done
 	}
 
-	return a[i].Priority < a[j].Priority
+	return a[i].Position < a[j].Position
 } 
 
 func SaveItems(filename string, items []Item) error {

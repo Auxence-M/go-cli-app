@@ -8,6 +8,7 @@ import (
 	"strconv"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 var doneCmd = &cobra.Command{
@@ -20,7 +21,7 @@ var doneCmd = &cobra.Command{
 }
 
 func doneRun (cmd *cobra.Command, args []string) {
-	items, err := todo.ReadItems(dataFile)
+	items, err := todo.ReadItems(viper.GetString("datafile"))
 	if err != nil {
 		log.Printf("%v", err)
 	}
@@ -35,12 +36,13 @@ func doneRun (cmd *cobra.Command, args []string) {
 		fmt.Printf("%q %v\n", items[i-1].Text, "marked done")
 
 		sort.Sort(todo.ByPriority(items))
-		todo.SaveItems(dataFile, items)
+		todo.SaveItems(viper.GetString("datafile"), items)
 	} else {
 		log.Println(i, "does not match any items")
 	}
 
 }
+
 func init() {
 	rootCmd.AddCommand(doneCmd)
 }

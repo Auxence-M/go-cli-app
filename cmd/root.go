@@ -4,13 +4,17 @@ Copyright © 2025 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
+	"fmt"
 	"log"
 	"os"
+
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
-// Store value of flags
+
 var dataFile string
+var configFile string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -30,10 +34,25 @@ func Execute() {
 	}
 }
 
+//Read in configuration file and ENV variables if set
+func initConfig() {
+	viper.AddConfigPath("./config")
+	viper.SetConfigName(".go-cli-app")
+	viper.AutomaticEnv()
+
+	// If a configuration file is found, read it in.
+	if err:= viper.ReadInConfig(); err == nil {
+		fmt.Println("Using config file:", viper.ConfigFileUsed())
+
+	}
+}
+
 func init() {
 	// Here you will define your flags and configuration settings.
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
+
+	cobra.OnInitialize(initConfig)
 
 	home, err := os.UserHomeDir()
 	if err != nil {
@@ -42,8 +61,9 @@ func init() {
 
 	// $HOME/.next.json
 	dataFilePath := home+string(os.PathSeparator)+".todo.json"
-
 	rootCmd.PersistentFlags().StringVar(&dataFile, "datafile", dataFilePath, "data file to store todos")
+
+	rootCmd.PersistentFlags().StringVar(&configFile, "config", "", "config file (default is $HOME/.go-cli-app.yaml)")
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.

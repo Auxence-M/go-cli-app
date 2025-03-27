@@ -8,6 +8,7 @@ import (
 	"text/tabwriter"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 var (
@@ -26,8 +27,9 @@ Todos that are set to done are hidden by default`,
 }
 
 func lsitRun(cmd *cobra.Command, args []string) {
-	items, err := todo.ReadItems(dataFile)
+	items, err := todo.ReadItems(viper.GetString("datafile"))
 	if err != nil {
+		fmt.Println(viper.GetString("datafile"))
 		fmt.Println(fmt.Errorf("%v", err))
 	}
 
