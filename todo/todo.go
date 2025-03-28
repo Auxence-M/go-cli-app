@@ -6,14 +6,14 @@ import (
 	"strconv"
 )
 
-type Item struct{
-	Text string
+type Item struct {
+	Text     string
 	Priority int
 	Position int
-	Done bool
+	Done     bool
 }
 
-func (item  *Item) SetPriority(pri int) {
+func (item *Item) SetPriority(pri int) {
 	switch pri {
 	case 1:
 		item.Priority = 1
@@ -27,14 +27,13 @@ func (item  *Item) SetPriority(pri int) {
 func (item *Item) GetPriority() string {
 	if item.Priority == 1 {
 		return "(1)"
-	} 
+	}
 	if item.Priority == 2 {
 		return "(2)"
 	}
 	if item.Priority == 3 {
 		return "(3)"
 	}
-	
 
 	return ""
 }
@@ -51,8 +50,7 @@ func (item *Item) DisplayDone() string {
 	return ""
 }
 
-
-// Implements a sort.Sort() interface  for array of Item base of priority and position
+// ByPriority Implements a sort.Sort() interface  for array of Item base of priority and position
 type ByPriority []Item
 
 func (a ByPriority) Len() int {
@@ -74,11 +72,11 @@ func (a ByPriority) Less(i, j int) bool {
 	}
 
 	return a[i].Position < a[j].Position
-} 
+}
 
 func SaveItems(filename string, items []Item) error {
 
-	b,err := json.Marshal(items)
+	b, err := json.Marshal(items)
 	if err != nil {
 		return err
 	}
@@ -93,21 +91,20 @@ func SaveItems(filename string, items []Item) error {
 
 func ReadItems(filename string) ([]Item, error) {
 
-	b,err := os.ReadFile(filename)
+	b, err := os.ReadFile(filename)
 	if err != nil {
 		return []Item{}, err
 	}
 
 	var items []Item
 	err = json.Unmarshal(b, &items)
-	if  err != nil {
+	if err != nil {
 		return []Item{}, err
 	}
-	
+
 	for i := range items {
 		items[i].Position = i + 1
 	}
 
 	return items, nil
 }
-

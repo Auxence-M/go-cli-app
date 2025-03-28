@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"go-cli-app/todo"
+	"doli/todo"
 	"log"
 
 	"github.com/spf13/cobra"
@@ -11,10 +11,10 @@ import (
 var priority int
 
 var addCmd = &cobra.Command{
-	Use: "add",
+	Use:   "add",
 	Short: "add a new todo",
-	Long: `add will create a new todo item to the list`,
-	Run: addRun,
+	Long:  `add will create a new todo item to the list`,
+	Run:   addRun,
 }
 
 func addRun(cmd *cobra.Command, args []string) {
@@ -26,11 +26,10 @@ func addRun(cmd *cobra.Command, args []string) {
 	for _, x := range args {
 		item := todo.Item{Text: x}
 		item.SetPriority(priority)
-		items  = append(items, item)
+		items = append(items, item)
 	}
-	
-	if err := todo.SaveItems(viper.GetString("datafile"), items); 
-	err != nil {
+
+	if err := todo.SaveItems(viper.GetString("datafile"), items); err != nil {
 		log.Printf("%v", err)
 	}
 }

@@ -1,6 +1,4 @@
-/*
-Copyright © 2025 NAME HERE <EMAIL ADDRESS>
-*/
+// Package cmd /*
 package cmd
 
 import (
@@ -12,16 +10,15 @@ import (
 	"github.com/spf13/viper"
 )
 
-
 var dataFile string
 var configFile string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "go-cli-app",
-	Short: "go-cli-app is a todo application made in go",
-	Long: `go-cli-app is a todo application made in go. 
-I dicided to to this to learn more about the go programming language basics. 
+	Use:   "doli",
+	Short: "doli is a todo application made in go",
+	Long: `doli is a todo application made in go. 
+I decided to to this to learn more about the go programming language basics. 
 It is designed to be as simple as possible to help you accomplish your goals `,
 }
 
@@ -34,14 +31,14 @@ func Execute() {
 	}
 }
 
-//Read in configuration file and ENV variables if set
+// Read in configuration file and ENV variables if set
 func initConfig() {
 	viper.AddConfigPath("./config")
-	viper.SetConfigName(".go-cli-app")
+	viper.SetConfigName(".doli")
 	viper.AutomaticEnv()
 
 	// If a configuration file is found, read it in.
-	if err:= viper.ReadInConfig(); err == nil {
+	if err := viper.ReadInConfig(); err == nil {
 		fmt.Println("Using config file:", viper.ConfigFileUsed())
 
 	}
@@ -60,14 +57,12 @@ func init() {
 	}
 
 	// $HOME/.next.json
-	dataFilePath := home+string(os.PathSeparator)+".todo.json"
+	dataFilePath := home + string(os.PathSeparator) + ".todo.json"
 	rootCmd.PersistentFlags().StringVar(&dataFile, "datafile", dataFilePath, "data file to store todos")
 
-	rootCmd.PersistentFlags().StringVar(&configFile, "config", "", "config file (default is $HOME/.go-cli-app.yaml)")
+	rootCmd.PersistentFlags().StringVar(&configFile, "config", "", "config file (default is $HOME/.doli.yaml)")
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
-
-

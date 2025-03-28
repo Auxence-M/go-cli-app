@@ -1,8 +1,8 @@
 package cmd
 
 import (
+	"doli/todo"
 	"fmt"
-	"go-cli-app/todo"
 	"log"
 	"sort"
 	"strconv"
@@ -12,11 +12,11 @@ import (
 )
 
 var editCmd = &cobra.Command{
-Use: "edit",
-Short: "edits a todo item",
-Long: `edit will edit a todo item value. 
+	Use:   "edit",
+	Short: "edits a todo item",
+	Long: `edit will edit a todo item value. 
 It takes only two argument the label or position of the todo item and its new value`,
-Run: editRun,
+	Run: editRun,
 }
 
 func editRun(cmd *cobra.Command, args []string) {
@@ -30,20 +30,21 @@ func editRun(cmd *cobra.Command, args []string) {
 		log.Fatalln(args[0], "is not a valid label\n", err)
 	}
 
-	if i> 0 && i <= len(items) {
+	if i > 0 && i <= len(items) {
 		prevValue := items[i-1].Text
 		items[i-1].Text = args[1]
 		fmt.Println(prevValue, "changed to", args[1])
 
 		sort.Sort(todo.ByPriority(items))
-		todo.SaveItems(viper.GetString("datafile"), items)
+		err := todo.SaveItems(viper.GetString("datafile"), items)
+		if err != nil {
+			log.Printf("%v", err)
+		}
 
 	} else {
-		
+
 		log.Println(i, "does not match any items")
 	}
-
-
 
 }
 

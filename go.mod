@@ -1,4 +1,4 @@
-module go-cli-app
+module doli
 
 go 1.24.1
 
