@@ -26,13 +26,13 @@ func (item *Item) SetPriority(pri int) {
 
 func (item *Item) GetPriority() string {
 	if item.Priority == 1 {
-		return "(1)"
+		return "(H)"
 	}
 	if item.Priority == 2 {
-		return "(2)"
+		return "(M)"
 	}
 	if item.Priority == 3 {
-		return "(3)"
+		return "(L)"
 	}
 
 	return ""
