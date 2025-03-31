@@ -32,8 +32,16 @@ func editRun(cmd *cobra.Command, args []string) {
 
 	if i > 0 && i <= len(items) {
 		prevValue := items[i-1].Text
-		items[i-1].Text = args[1]
-		fmt.Println(prevValue, "changed to", args[1])
+
+		if len(args) > 1 {
+			items[i-1].Text = args[1]
+			fmt.Println(prevValue, "changed to", args[1])
+		}
+
+		if priority > 0 && priority != items[i-1].Priority {
+			items[i-1].SetPriority(priority)
+			fmt.Println("Todo item number", args[0], "priority changed to", priority)
+		}
 
 		sort.Sort(todo.ByPriority(items))
 		err := todo.SaveItems(viper.GetString("datafile"), items)
@@ -50,4 +58,5 @@ func editRun(cmd *cobra.Command, args []string) {
 
 func init() {
 	rootCmd.AddCommand(editCmd)
+	editCmd.Flags().IntVarP(&priority, "priority", "p", 0, "Priority: 1,2,3")
 }
