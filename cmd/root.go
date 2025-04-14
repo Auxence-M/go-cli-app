@@ -60,7 +60,7 @@ func init() {
 	dataFilePath := home + string(os.PathSeparator) + ".todo.json"
 	rootCmd.PersistentFlags().StringVar(&dataFile, "datafile", dataFilePath, "data file to store todos")
 
-	rootCmd.PersistentFlags().StringVar(&configFile, "config", "", "config file (default is $HOME/.doli.yaml)")
+	rootCmd.PersistentFlags().StringVar(&configFile, "config", "", "config file (default is config/.doli.yaml)")
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
