@@ -4,7 +4,7 @@ The app name is doli. doli is a todo list cli app made in golang using the [spf1
 
 ## How to run
 
-1. Clone the repository `git clone https://github.com/Auxence-M/go-cli-app.git`
+1. Clone the repository `git clone https://github.com/auxence-m/go-cli-app.git`
 2. Change your directory to the project directory `cd go-cli-app`
 3. Install dependencies `go mod tidy`
 4. Modify the _.doli.yaml_ file and provide a path for where you would like to store the datafile for this app. 
